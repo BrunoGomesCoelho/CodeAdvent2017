@@ -13,26 +13,59 @@ def operators(cmd, n_count, ne_count, nw_count, s_count, se_count, sw_count):
     }.get(cmd, lambda: None)()
 
 dic = defaultdict(int)
-n_count, ne_count, nw_count = 0
+n_count = ne_count = nw_count = s_count = se_count = sw_count = 0
 
 for cmd in line:
     n_count, ne_count, nw_count, s_count, se_count, sw_count = \
             operators(cmd, n_count, ne_count, nw_count, s_count, se_count, sw_count)  
 
-def change_min(a, b):
+def cancel_equals(a, b):
     smallest = min(a, b)
     return a - smallest, b -smallest, True
 
+def cancel_opposites(a, b):
+    smallest = min(a, b)
+    return smallest, a - smallest, b - smallest, True
+
 while True:
     change = False
+    # cancels equal moves
     if n_count > 0 and s_count > 0:
-            
+           n_count, s_count, change =  cancel_equals(n_count, s_count)
     if ne_count > 0 and sw_count > 0:
-        smallest = min(n_count, s_count)
-        n_count -= smallest
-        s_count -= smallest
+        ne_count, sw_count, change =  cancel_equals(ne_count, sw_count)
+    if nw_count > 0 and se_count > 0:
+        nw_count, se_count, change =  cancel_equals(nw_count, se_count)
+    
+    # a diag right up + diag left up = up
+    if ne_count > 0 and nw_count > 0:
+        smallest, ne_count, nw_count, change = cancel_opposites(ne_count, nw_count)
+        n_count += smallest
+    # same thing down
+    if se_count > 0 and sw_count > 0:
+        smallest, se_count, sw_count, change = cancel_opposites(se_count, sw_count)
+        s_count += smallest
 
+    # n + se = ne
+    if n_count > 0 and se_count > 0:
+        smallest, n_count, se_count, change = cancel_opposites(n_count, se_count)
+        ne_count += smallest
+    # n + sw  = nw
+    if n_count > 0 and sw_count > 0:
+        smallest, n_count, sw_count, change = cancel_opposites(n_count, sw_count)
+        nw_count += smallest   
+    # s + nw = sw
+    if s_count > 0 and nw_count > 0:
+        smallest, s_count, nw_count, change = cancel_opposites(s_count, nw_count)
+        sw_count += smallest  
+    # s + ne = se
+    if s_count > 0 and ne_count > 0:
+        smallest, s_count, ne_count, change = cancel_opposites(s_count, ne_count)
+        se_count += smallest  
 
+    # if no change occured, abort
+    if not change:
+        break
 
-
+print(sum([n_count, ne_count, nw_count, s_count, se_count, sw_count]))
 
