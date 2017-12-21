@@ -12,6 +12,9 @@ def process_move(move, x, y):
         }.get(move, lambda: print("This is a bug! Missing operation in dict"))()
 
 
+# comentários
+
+
 def check_adjacents_squares(x, y):
     count = 0
     for i in range(-1, 2):
