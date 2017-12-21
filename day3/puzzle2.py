@@ -20,8 +20,6 @@ def check_adjacents_squares(x, y):
             # print("matrix[%d][%d] = %d" % (y+i, x+j, matrix[y+i][x+j]))   
     return count
 
-
-# puzzle_input = 310
 puzzle_input = 361257
 limit = 1000    # since 1000**2 >> puzzle_input
 
