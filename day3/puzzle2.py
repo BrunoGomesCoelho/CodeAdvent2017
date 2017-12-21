@@ -9,10 +9,7 @@ def process_move(move, x, y):
             "L": lambda: (x-1, y),
             "R": lambda: (x+1, y),
             "D": lambda: (x, y+1),
-        }.get(move, lambda: print("This is a bug! Missing operation in dict"))()
-
-
-# comentários
+    }.get(move)()
 
 
 def check_adjacents_squares(x, y):
@@ -20,7 +17,6 @@ def check_adjacents_squares(x, y):
     for i in range(-1, 2):
         for j in range(-1, 2):
             count += matrix[y+i][x+j]
-            # print("matrix[%d][%d] = %d" % (y+i, x+j, matrix[y+i][x+j]))   
     return count
 
 puzzle_input = 361257
@@ -40,7 +36,6 @@ while current_total < puzzle_input:
         matrix[new_y][new_x] = current_total = check_adjacents_squares(new_x, new_y)
         x, y = new_x, new_y
         
-        # print(current_total, "matrix[%d][%d] = %d" % (new_y, new_x, matrix[new_y][new_x]))
         if current_total > puzzle_input:
             break
         print(current_total)
